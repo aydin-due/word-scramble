@@ -8,33 +8,37 @@
 import SwiftUI
 
 struct ContentView: View {
-    let people = ["Finn", "Leia", "Luke", "Rey"]
-    /*
-    if let fileURL =  Bundle.main.url(forResource: "name", withExtension: "txt") {
-        // file found
+    @State private var usedWords = [String]()
+    @State private var rootWord = ""
+    @State private var newWord = ""
+    
+    func addWord(){
+        let answer = newWord.lowercased().trimmingCharacters(in: .whitespacesAndNewlines)
+        guard answer.count > 0 else { return }
+        withAnimation { usedWords.insert(answer, at: 0) }
+        newWord = ""
     }
-     if let fileContent = try? String(contentsOf: fileURL) {
-         // loaded file intro str
-     }
-     */
-   
+    
     var body: some View {
-        List {
-            Section {
-                Text("a")
+        NavigationView{
+            List {
+                Section {
+                    TextField("enter your word: ", text: $newWord)
+                        .textInputAutocapitalization(.never)
+                        
+                }
+                Section {
+                    ForEach(usedWords, id: \.self) { word in
+                        HStack {
+                            Image(systemName: "\(word.count).circle")
+                            Text(word)
+                        }
+                    }
+                }
             }
-            
-            ForEach(2..<5){
-                Text("\($0)")
-            }
+            .navigationTitle(rootWord)
+            .onSubmit(addWord)
         }
-        List(0..<2){
-            Text("\($0)")
-        }
-        List(people, id: \.self){
-            Text("\($0)")
-        }
-        
     }
 }
 
