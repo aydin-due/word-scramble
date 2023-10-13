@@ -14,6 +14,7 @@ struct ContentView: View {
     @State private var errorTitle = ""
     @State private var errorMsg = ""
     @State private var showingError = false
+    @State private var score = 0
     
     func start() {
         // find file url
@@ -31,6 +32,7 @@ struct ContentView: View {
     func restart(){
         start()
         usedWords = []
+        score = 0
     }
     
     func addWord(){
@@ -61,6 +63,7 @@ struct ContentView: View {
             return
         }
         
+        score += answer.count
         withAnimation { usedWords.insert(answer, at: 0) }
         newWord = ""
     }
@@ -109,6 +112,11 @@ struct ContentView: View {
                     TextField("enter your word: ", text: $newWord)
                         .textInputAutocapitalization(.never)
                         
+                }
+                Section {
+                    Text("score: \(score)")
+                        .font(.headline)
+                        .frame(maxWidth: /*@START_MENU_TOKEN@*/.infinity/*@END_MENU_TOKEN@*/)
                 }
                 Section {
                     ForEach(usedWords, id: \.self) { word in
