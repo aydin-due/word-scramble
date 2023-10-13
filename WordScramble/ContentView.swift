@@ -28,6 +28,11 @@ struct ContentView: View {
         fatalError("something went wrong ://")
     }
     
+    func restart(){
+        start()
+        usedWords = []
+    }
+    
     func addWord(){
         let answer = newWord.lowercased().trimmingCharacters(in: .whitespacesAndNewlines)
         guard answer.count > 0 else { return }
@@ -122,7 +127,11 @@ struct ContentView: View {
             } message: {
                 Text(errorMsg)
             }
+            .toolbar {
+                Button("restart", action: restart)
+            }
         }
+        
     }
 }
 
